@@ -54,7 +54,7 @@ import org.jdesktop.swing.animation.timing.sources.SwingTimerTimingSource;
 /**
  * @author Eneko
  */
-public class jDynamicList extends JComponent {
+public class JDynamicList extends JComponent {
 
     private List<Representable> list;
     private Dimension childsDimension;
@@ -82,20 +82,20 @@ public class jDynamicList extends JComponent {
      * @param list
      * @param elementSize
      */
-    public jDynamicList(int spacing, List<Representable> list,
-                            Dimension elementSize) {
+    public JDynamicList(int spacing, List<Representable> list,
+                            Dimension itemSize) {
         this.spacing = spacing;
-        this.childsDimension = elementSize;
+        this.childsDimension = itemSize;
         this.list = list;
         this.backButton =
-            new PageCtrlButton(jDynamicList.class.getResource("/jcool/resources/"
+            new PageCtrlButton(JDynamicList.class.getResource("/jcool/resources/"
                                                                    + "back.png"),
-                               jDynamicList.class.getResource("/jcool/resources/"
+                               JDynamicList.class.getResource("/jcool/resources/"
                                                                + "back-mo.png"));
         this.nextButton =
-            new PageCtrlButton(jDynamicList.class.getResource("/jcool/resources/"
+            new PageCtrlButton(JDynamicList.class.getResource("/jcool/resources/"
                                                                    + "next.png"),
-                               jDynamicList.class.getResource("/jcool/resources/"
+                               JDynamicList.class.getResource("/jcool/resources/"
                                                                + "next-mo.png"));
         this.pageCounter = new JLabel();
         pageCounter.setFont(pageCounter.getFont().deriveFont((float)20));
@@ -520,6 +520,10 @@ public class jDynamicList extends JComponent {
                 break;
         }
 
+    }
+
+    public void update() {
+        onResize();
     }
 
     private void backwards(PageCtrlButton ctrlButton) {

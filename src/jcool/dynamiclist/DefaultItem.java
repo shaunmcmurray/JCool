@@ -32,11 +32,11 @@ import javax.swing.JComponent;
 /**
  * @author Eneko
  */
-public abstract class DefaultElement extends JComponent implements Representable {
+public abstract class DefaultItem extends JComponent implements Representable {
 
         private boolean isMouseOver;
 
-        public DefaultElement() {
+        public DefaultItem() {
             super();
             this.setOpaque(false);
             this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

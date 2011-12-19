@@ -36,11 +36,11 @@ import javax.swing.JComponent;
 /**
  * @author Eneko
  */
-public class jImage extends JComponent {
+public class JImage extends JComponent {
 
     private BufferedImage image = null;
 
-    public jImage(URL imageURL) {
+    public JImage(URL imageURL) {
         try {
             this.image = ImageIO.read(imageURL);
             this.setSize(image.getWidth(), image.getHeight());
