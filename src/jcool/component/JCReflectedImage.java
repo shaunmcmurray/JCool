@@ -18,7 +18,7 @@
  *
  */
 
-package jcool.utils;
+package jcool.component;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -36,19 +36,37 @@ import javax.swing.JComponent;
 /**
  * @author Eneko
  */
-public class JImage extends JComponent {
+public class JCReflectedImage extends JComponent {
 
     private BufferedImage image = null;
 
-    public JImage(URL imageURL) {
+    public JCReflectedImage(URL imageURL) {
         try {
-            this.image = ImageIO.read(imageURL);
+            this.image = createReflectedImage(ImageIO.read(imageURL));
             this.setSize(image.getWidth(), image.getHeight());
             repaint();
         } catch (IOException ex) {
             Logger.getLogger("jcool").log(Level.SEVERE, "Couldn't load the image"
                                           + " from the URL.");
         }
+    }
+
+    public static BufferedImage createReflectedImage(BufferedImage image) {
+        BufferedImage result = new BufferedImage(image.getWidth(),
+                image.getHeight() * 6 / 4, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = result.createGraphics();
+        g.drawImage(image, 0, 0, null);
+        g.scale(1.0, -1.0);
+        g.drawImage(image, 0, -image.getHeight() * 2, null);
+        g.scale(1.0, -1.0);
+        g.translate(0, image.getHeight());
+        GradientPaint mask = new GradientPaint(0, 0, new Color(1f, 1f, 1f, 0.5f),
+                            0, image.getHeight() / 2, new Color(1f, 1f, 1f, 0f));
+        g.setPaint(mask);
+        g.setComposite(AlphaComposite.DstIn);
+        g.fillRect(0, 0, image.getWidth(), image.getHeight());
+        g.dispose();
+        return result;
     }
 
     @Override

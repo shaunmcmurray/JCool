@@ -18,7 +18,7 @@
  *
  */
 
-package jcool.dynamiclist;
+package jcool.component.dynamiclist;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -73,6 +73,7 @@ public abstract class DefaultItem extends JComponent implements Representable {
             super.paintComponent(g);
         }
 
+    @Override
     public abstract JComponent getRepresentation();
         
 }

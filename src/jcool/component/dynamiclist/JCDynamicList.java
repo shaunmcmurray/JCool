@@ -18,8 +18,9 @@
  *
  */
 
-package jcool.dynamiclist;
+package jcool.component.dynamiclist;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -54,48 +55,64 @@ import org.jdesktop.swing.animation.timing.sources.SwingTimerTimingSource;
 /**
  * @author Eneko
  */
-public class JDynamicList extends JComponent {
+public class JCDynamicList extends JComponent {
 
+    /** List with the Data wanted to be represented in this component */
     private List<Representable> list;
+
+    /** Layout related variables */
     private Dimension childsDimension;
     private int spacing;
     private int columns;
     private int rows;
     private int currentPage = 0;
     private int pageCount = 1;
+    private float opacity = 1;
     private boolean animating = false;
     private boolean transitioned = false;
+    private JLabel pageCounter;
+
+    /** 
+     * Current components in shown that will be removed when turning on the 
+     * page
+     */
     private int componentsToRemove;
+    
+    /** Page swithching components related variables */
     private static final int pageButtonsSpace = 30;
     private static final int pageCtrlCompCount = 3;
     private PageCtrlButton backButton;
     private PageCtrlButton nextButton;
-    private JLabel pageCounter;
+
+    /** Animator to animate page switching and transitions*/
     private Animator animator = null;
+
+    /** Component which will be shown (with animation) on transition*/
     private JComponent transitionTarget = null;
+
+    /** Timing source of the animations */
     private static final SwingTimerTimingSource timingSource =
-                         new SwingTimerTimingSource(22, TimeUnit.MILLISECONDS);
+                         new SwingTimerTimingSource(18, TimeUnit.MILLISECONDS);
 
     /**
-     *
      * @param spacing pixels between visual elements in the list
      * @param list
      * @param elementSize
      */
-    public JDynamicList(int spacing, List<Representable> list,
+    public JCDynamicList(int spacing, List<Representable> list,
                             Dimension itemSize) {
         this.spacing = spacing;
         this.childsDimension = itemSize;
         this.list = list;
         this.backButton =
-            new PageCtrlButton(JDynamicList.class.getResource("/jcool/resources/"
+            new PageCtrlButton(JCDynamicList.class.getResource("/jcool/resources/"
                                                                    + "back.png"),
-                               JDynamicList.class.getResource("/jcool/resources/"
+                               JCDynamicList.class.getResource("/jcool/resources/"
                                                                + "back-mo.png"));
         this.nextButton =
-            new PageCtrlButton(JDynamicList.class.getResource("/jcool/resources/"
+            new PageCtrlButton(JCDynamicList.class.getResource("/jcool/resources/"
                                                                    + "next.png"),
-                               JDynamicList.class.getResource("/jcool/resources/"
+                               JCDynamicList.class.getResource("/jcool/resources/"
                                                                + "next-mo.png"));
         this.pageCounter = new JLabel();
         pageCounter.setFont(pageCounter.getFont().deriveFont((float)20));
@@ -142,6 +159,10 @@ public class JDynamicList extends JComponent {
 
     }
 
+    /**
+     * Lays out the components on resize. Also called by update() method to
+     * relayout components.
+     */
     private void onResize() {
         if (animating) {
             animator.cancel();
@@ -240,7 +261,7 @@ public class JDynamicList extends JComponent {
 
             animator = new AnimatorBuilder(timingSource)
                        .setInterpolator(new AccelerationInterpolator(0.1, 0.8))
-                       .setDuration(900, TimeUnit.MILLISECONDS)
+                       .setDuration(800, TimeUnit.MILLISECONDS)
                        .build();
             timingSource.init();
 
@@ -311,7 +332,7 @@ public class JDynamicList extends JComponent {
 
             animator = new AnimatorBuilder(timingSource)
                        .setInterpolator(new AccelerationInterpolator(0.1, 0.8))
-                       .setDuration(900, TimeUnit.MILLISECONDS)
+                       .setDuration(800, TimeUnit.MILLISECONDS)
                        .build();
             timingSource.init();
 
@@ -522,8 +543,17 @@ public class JDynamicList extends JComponent {
 
     }
 
+    /**
+     * Relayouts components, updating the view. It needs to be called when the
+     * List of Representables is modified to update the view of the JCDynamicList
+     */
     public void update() {
         onResize();
+    }
+
+    @Override
+    public void update(Graphics p) {
+        paint(p);
     }
 
     private void backwards(PageCtrlButton ctrlButton) {
@@ -532,6 +562,60 @@ public class JDynamicList extends JComponent {
 
     private void forwards(PageCtrlButton ctrlButton) {
         ctrlButton.setLocation(ctrlButton.getX()+2, ctrlButton.getY());
+    }
+
+    @Override
+    protected void paintChildren(Graphics g) {
+        ((Graphics2D)g).setComposite(AlphaComposite.getInstance(
+                                     AlphaComposite.SRC_OVER, opacity));
+        super.paintChildren(g);
+    }
+
+    /**
+     * This method will be soon removed to create a JCFadeableComponent
+     * which will be extended by this class.
+     *
+     * @param initialOpacity opacity between 1 (opaque) and 0 (transparent)
+     * @param finalOpacity opacity between 1 (opaque) and 0 (transparent)
+     */
+    public void fade(float initialOpacity, float finalOpacity) {
+        Animator anim = new AnimatorBuilder(timingSource)
+                   .setInterpolator(new AccelerationInterpolator(0.2, 0.6))
+                   .setDuration(500, TimeUnit.MILLISECONDS)
+                   .build();
+        timingSource.init();
+
+        anim.addTarget(new TimingTargetAdapter() {
+            @Override
+            public void timingEvent(Animator source, double fraction) {
+                repaint();
+            }
+        });
+
+        TimingTarget setter = PropertySetter.getTarget(this, "opacity",
+                                                       initialOpacity,
+                                                       finalOpacity);
+
+        anim.addTarget(setter);
+
+        anim.start();
+    }
+
+    /**
+     * This method will be soon removed to create a JCFadeableComponent
+     * which will be extended by this class.
+     */
+    public float getOpacity() {
+        return opacity;
+    }
+
+    /**
+     * This method will be soon removed to create a JCFadeableComponent
+     * which will be extended by this class.
+     */
+    public void setOpacity(float opacity) {
+        this.opacity = opacity;
+        repaint();
     }
 
     private class PageCtrlButton extends JComponent {

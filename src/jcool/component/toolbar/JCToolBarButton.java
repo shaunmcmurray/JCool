@@ -15,18 +15,47 @@
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Copyright © 2011 Eneko Sanz Blanco <nkogear@gmail.com>
- * 
+ *
  */
 
-package jcool.dynamiclist;
+package jcool.component.toolbar;
 
-import javax.swing.JComponent;
+import javax.swing.JToggleButton;
+import javax.swing.border.Border;
+import javax.swing.plaf.ButtonUI;
 
 /**
+ *
  * @author Eneko
  */
-public interface Representable {
+public class JCToolBarButton extends JToggleButton {
 
-    public JComponent getRepresentation();
+    public JCToolBarButton() {
+        super();
+        super.setBorder(null);
+        super.setUI(new JCToolBarButtonUI());
+    }
+
+    /**
+     * JCToolBarButton should only be used with JCToolBarButtonUI.
+     *
+     * This method does nothing and should not be used.
+     *
+     * @param ui
+     */
+    @Override
+    public void setUI(ButtonUI ui) {
+
+    }
+
+    /**
+     * This method does nothing and should not be used.
+     *
+     * @param border
+     */
+    @Override
+    public void setBorder(Border border) {
+
+    }
 
 }
