@@ -20,7 +20,6 @@
 
 package jcool.component.dynamiclist;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -42,6 +41,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import jcool.component.JCFadeableComponent;
 import org.jdesktop.core.animation.timing.Animator;
 import org.jdesktop.core.animation.timing.AnimatorBuilder;
 import org.jdesktop.core.animation.timing.PropertySetter;
@@ -55,7 +55,7 @@ import org.jdesktop.swing.animation.timing.sources.SwingTimerTimingSource;
 /**
  * @author Eneko
  */
-public class JCDynamicList extends JComponent {
+public class JCDynamicList extends JCFadeableComponent {
 
     /** List with the Data wanted to be represented in this component */
     private List<Representable> list;
@@ -67,7 +67,7 @@ public class JCDynamicList extends JComponent {
     private int rows;
     private int currentPage = 0;
     private int pageCount = 1;
-    private float opacity = 1;
+//    private float opacity = 1;
     private boolean animating = false;
     private boolean transitioned = false;
     private JLabel pageCounter;
@@ -562,60 +562,6 @@ public class JCDynamicList extends JComponent {
 
     private void forwards(PageCtrlButton ctrlButton) {
         ctrlButton.setLocation(ctrlButton.getX()+2, ctrlButton.getY());
-    }
-
-    @Override
-    protected void paintChildren(Graphics g) {
-        ((Graphics2D)g).setComposite(AlphaComposite.getInstance(
-                                     AlphaComposite.SRC_OVER, opacity));
-        super.paintChildren(g);
-    }
-
-    /**
-     * This method will be soon removed to create a JCFadeableComponent
-     * which will be extended by this class.
-     *
-     * @param initialOpacity opacity between 1 (opaque) and 0 (transparent)
-     * @param finalOpacity opacity between 1 (opaque) and 0 (transparent)
-     */
-    public void fade(float initialOpacity, float finalOpacity) {
-        Animator anim = new AnimatorBuilder(timingSource)
-                   .setInterpolator(new AccelerationInterpolator(0.2, 0.6))
-                   .setDuration(500, TimeUnit.MILLISECONDS)
-                   .build();
-        timingSource.init();
-
-        anim.addTarget(new TimingTargetAdapter() {
-            @Override
-            public void timingEvent(Animator source, double fraction) {
-                repaint();
-            }
-        });
-
-        TimingTarget setter = PropertySetter.getTarget(this, "opacity",
-                                                       initialOpacity,
-                                                       finalOpacity);
-
-        anim.addTarget(setter);
-
-        anim.start();
-    }
-
-    /**
-     * This method will be soon removed to create a JCFadeableComponent
-     * which will be extended by this class.
-     */
-    public float getOpacity() {
-        return opacity;
-    }
-
-    /**
-     * This method will be soon removed to create a JCFadeableComponent
-     * which will be extended by this class.
-     */
-    public void setOpacity(float opacity) {
-        this.opacity = opacity;
-        repaint();
     }
 
     private class PageCtrlButton extends JComponent {
