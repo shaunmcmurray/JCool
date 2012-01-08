@@ -1,22 +1,23 @@
 /*
- * This file is part of jCool.
+ * This file is part of JCool.
  *
- * jCool is free software: you can redistribute it and/or modify
+ * JCool is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Foobar is distributed in the hope that it will be useful,
+ * JCool is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+ * along with JCool.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Copyright © 2011 Eneko Sanz Blanco <nkogear@gmail.com>
  *
  */
+
 package jcool.component.toolbar;
 
 import java.awt.Color;
@@ -24,13 +25,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LinearGradientPaint;
 import java.awt.RenderingHints;
+import java.io.Serializable;
 import javax.swing.JPanel;
 
 /**
  *
  * @author Eneko
  */
-public class JCToolBar extends JPanel {
+public class JCToolBar extends JPanel implements Serializable {
 
     // the background colors used in the multi-stop gradient.
     private static Color BACKGROUND_COLOR_1 = new Color(67, 67, 67);
