@@ -67,7 +67,6 @@ public class JCDynamicList extends JCFadeableComponent {
     private int rows;
     private int currentPage = 0;
     private int pageCount = 1;
-//    private float opacity = 1;
     private boolean animating = false;
     private boolean transitioned = false;
     private JLabel pageCounter;
@@ -384,6 +383,49 @@ public class JCDynamicList extends JCFadeableComponent {
             animating = true;
             animator.start();
         }
+    }
+    
+//    //TODO should perform an animation going to the new page setted
+//    public void setCurrentPage(int page) {
+//        if ((page < currentPage)&&(page >= 0)) {
+//            // TODO
+//        } else
+//            if ((page > currentPage)&&((page + 1) < pageCount)) {
+//                // TODO
+//            }
+//    }
+    
+    /**
+     * The current page, starting from 0
+     * 
+     * @return
+     */
+    public int getCurrentPage() {
+        return currentPage;
+    }
+    
+    /**
+     * Number of pages this list has.
+     * 
+     * @return
+     */
+    public int getPageCount() {
+        return pageCount;
+    }
+    
+    /**
+     * 
+     *
+     * @return
+     */
+    public Representable[] getCurrentPageItems() {
+        int positionInList = (currentPage * columns * rows);
+        int listSize = list.size();
+        int elemsInPage = listSize - positionInList;
+        Representable[] representables = new Representable[elemsInPage];
+        for(;positionInList < listSize ;positionInList++)
+            representables[positionInList] = list.get(positionInList);
+        return representables;
     }
 
     public void transitionTo(JComponent component) {

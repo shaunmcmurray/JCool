@@ -20,9 +20,6 @@
 
 package jcool.component;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -38,7 +35,10 @@ import javax.swing.JComponent;
  */
 public class JCImage extends JComponent {
 
-    private BufferedImage image = null;
+    protected BufferedImage image = null;
+
+    protected JCImage() {
+    }
 
     public JCImage(URL imageURL) {
         try {
@@ -49,6 +49,22 @@ public class JCImage extends JComponent {
             Logger.getLogger("jcool").log(Level.SEVERE, "Couldn't load the image"
                                           + " from the URL.");
         }
+    }
+
+    public JCImage(BufferedImage image) {
+        this.image = image;
+        this.setSize(image.getWidth(), image.getHeight());
+        repaint();
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+        this.setSize(image.getWidth(), image.getHeight());
+        repaint();
     }
 
     @Override

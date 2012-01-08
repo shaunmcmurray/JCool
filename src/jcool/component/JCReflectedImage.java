@@ -23,7 +23,6 @@ package jcool.component;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.GradientPaint;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -31,14 +30,11 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.JComponent;
 
 /**
  * @author Eneko
  */
-public class JCReflectedImage extends JComponent {
-
-    private BufferedImage image = null;
+public class JCReflectedImage extends JCImage {
 
     public JCReflectedImage(URL imageURL) {
         try {
@@ -49,6 +45,15 @@ public class JCReflectedImage extends JComponent {
             Logger.getLogger("jcool").log(Level.SEVERE, "Couldn't load the image"
                                           + " from the URL.");
         }
+    }
+
+    public JCReflectedImage(BufferedImage image) {
+        super(createReflectedImage(image));
+    }
+
+    @Override
+    public void setImage(BufferedImage image) {
+        super.setImage(createReflectedImage(image));
     }
 
     public static BufferedImage createReflectedImage(BufferedImage image) {
@@ -67,13 +72,6 @@ public class JCReflectedImage extends JComponent {
         g.fillRect(0, 0, image.getWidth(), image.getHeight());
         g.dispose();
         return result;
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.drawImage(image, WIDTH, HEIGHT, null);
-        g2.dispose();
     }
 
 }
