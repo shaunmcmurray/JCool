@@ -67,7 +67,7 @@ public class JCButton extends JButton implements Serializable {
      */
     @Override
     public void setUI(ButtonUI ui) {
-        
+        super.setUI(ui);
     }
 
 

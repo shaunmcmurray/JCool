@@ -20,13 +20,7 @@
 
 package jcool.component.button;
 
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.LinearGradientPaint;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import javax.swing.AbstractButton;
@@ -103,7 +97,7 @@ public class JCButtonUI extends BasicButtonUI {
         g2.setColor(borderColor);
         g2.drawRoundRect(1, 1, c.getWidth() - 3, c.getHeight() - 3,
                                               roundness, roundness);
-
+        
         super.paint(g, c);
     }
 

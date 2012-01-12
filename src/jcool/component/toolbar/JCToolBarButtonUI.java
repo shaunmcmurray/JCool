@@ -20,14 +20,7 @@
 
 package jcool.component.toolbar;
 
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -94,8 +87,6 @@ public class JCToolBarButtonUI extends BasicButtonUI {
 
         ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                                          RenderingHints.VALUE_ANTIALIAS_ON);
-        ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_RENDERING,
-                                         RenderingHints.VALUE_RENDER_QUALITY);
 
         FontMetrics fontMetrics = g.getFontMetrics(button.getFont());
         int mnemonicIndex = button.getDisplayedMnemonicIndex();
