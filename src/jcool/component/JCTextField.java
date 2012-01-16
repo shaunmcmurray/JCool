@@ -127,7 +127,8 @@ public class JCTextField extends JTextField implements Serializable {
     }
 
     /**
-     * This funtion should not be used. You can change the border color with
+     * This funtion should not be used.
+     * You can change the border color with
      * setBorderColor(), and shadows with setShadowColors();
      */
     @Override

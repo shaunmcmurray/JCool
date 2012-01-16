@@ -34,15 +34,17 @@ import jcool.utils.JCoolUtils;
  */
 public class JCButtonUI extends BasicButtonUI {
 
-    // The background colors used in the multi-stop gradient
-    private Color bgColor1 = new Color(0xffffff);
-    private Color bgColor2 = new Color(0xdbdbdb);
+    // The default background colors used in the multi-stop gradient
+    private static final Color bgColorTop = new Color(0xffffff);
+    private static final Color bgColorBottom = new Color(0xdbdbdb);
     
-    // The background colors used in the multi-stop gradient on rollover
-    private Color bgColor3 = new Color(0xdedede);
-    private Color bgColor4 = new Color(0xc0c0c0);
+    // The default background colors used in the multi-stop gradient on rollover
+    private static final Color bgColorTopRollover = new Color(0xdedede);
+    private static final Color bgColorBottomRollover = new Color(0xc0c0c0);
+
+    private static final Color bgColorTopPressed = new Color(0xd0d0d0);
     
-    // Background gradients
+    // Background gradients (customizable)
     private LinearGradientPaint bgGradient;
     private LinearGradientPaint bgGradientRollover;
     private LinearGradientPaint bgGradientPressed;
@@ -61,8 +63,7 @@ public class JCButtonUI extends BasicButtonUI {
         b.setBorder(null);
         b.setOpaque(false);
         b.setFont(JCoolUtils.getJCoolFont());
-        if (b.getHeight() != 0)
-            adjustGradients(b.getHeight());
+        createDefaultGradients(1);
         b.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -125,31 +126,44 @@ public class JCButtonUI extends BasicButtonUI {
         this.roundness = roundness;
     }
 
-    public void setBackgroundGradient(LinearGradientPaint gradient) {
-        this.bgGradient = gradient;
+    public void setBackgroundGradient(Color topColor, Color bottomColor) {
+        int height = (int) bgGradient.getEndPoint().getY();
+        bgGradient = newGradient(height, topColor, bottomColor);
     }
 
-    public void setBackgroundRolloverGradient(LinearGradientPaint gradient) {
-        this.bgGradientRollover = gradient;
+    public void setBackgroundRolloverGradient(Color topColor, Color bottomColor) {
+        int height = (int) bgGradientRollover.getEndPoint().getY();
+        bgGradientRollover = newGradient(height, topColor, bottomColor);
     }
 
-    public void setBackgroundPressedGradient(LinearGradientPaint gradient) {
-        this.bgGradientPressed = gradient;
+    public void setBackgroundPressedGradient(Color topColor, Color bottomColor) {
+        int height = (int) bgGradientPressed.getEndPoint().getY();
+        bgGradientPressed = newGradient(height, topColor, bottomColor);
     }
 
+    private void createDefaultGradients(int height) {
+        bgGradient = newGradient(height, bgColorTop, bgColorBottom);
+        bgGradientRollover = newGradient(height, bgColorTopRollover,
+                                                 bgColorBottomRollover);
+        bgGradientPressed = newGradient(height, bgColorTopPressed,
+                                                bgColorTopRollover);
+    }
+    
     private void adjustGradients(int newHeight) {
-        bgGradient = new LinearGradientPaint(0, 0, 0, newHeight,
-                                             new float[] {0f, 1f},
-                                             new Color[] {bgColor1,
-                                                          bgColor2});
-        bgGradientRollover = new LinearGradientPaint(0, 0, 0, newHeight,
-                                                     new float[] {0f, 1f},
-                                                     new Color[] {bgColor3,
-                                                                  bgColor4});
-        bgGradientPressed = new LinearGradientPaint(0, 0, 0, newHeight,
-                                                     new float[] {0f, 1f},
-                                                     new Color[] {bgColor4,
-                                                                  bgColor3});
+        Color[] bgColors = bgGradient.getColors();
+        Color[] bgColorsRollover = bgGradientRollover.getColors();
+        Color[] bgColorsPressed = bgGradientPressed.getColors();
+        bgGradient = newGradient(newHeight, bgColors[0], bgColors[1]);
+        bgGradientRollover = newGradient(newHeight, bgColorsRollover[0],
+                                                    bgColorsRollover[1]);
+        bgGradientPressed = newGradient(newHeight, bgColorsPressed[0],
+                                                   bgColorsPressed[1]);
     }
-
+ 
+    private LinearGradientPaint newGradient(int height, Color topColor,
+                                                        Color bottomColor) {
+        return new LinearGradientPaint(0, 0, 0, height,
+                                       new float[] {0f, 1f},
+                                       new Color[] {topColor, bottomColor});
+    }
 }

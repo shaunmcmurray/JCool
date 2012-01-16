@@ -20,7 +20,7 @@
 
 package jcool.component.button;
 
-import java.awt.LinearGradientPaint;
+import java.awt.Color;
 import java.io.Serializable;
 import javax.swing.JButton;
 import javax.swing.plaf.ButtonUI;
@@ -46,16 +46,18 @@ public class JCButton extends JButton implements Serializable {
         ((JCButtonUI)getUI()).setRoundness(roundness);
     }
 
-    public void setBackgroundGradient(LinearGradientPaint gradient) {
-        ((JCButtonUI)getUI()).setBackgroundGradient(gradient);
+    public void setBackgroundGradient(Color topColor, Color bottomColor) {
+        ((JCButtonUI)getUI()).setBackgroundGradient(topColor, bottomColor);
     }
 
-    public void setBackgroundRolloverGradient(LinearGradientPaint gradient) {
-        ((JCButtonUI)getUI()).setBackgroundRolloverGradient(gradient);
+    public void setBackgroundRolloverGradient(Color topColor, Color bottomColor) {
+        ((JCButtonUI)getUI()).setBackgroundRolloverGradient(topColor,
+                                                            bottomColor);
     }
 
-    public void setBackgroundPressedGradient(LinearGradientPaint gradient) {
-        ((JCButtonUI)getUI()).setBackgroundPressedGradient(gradient);
+    public void setBackgroundPressedGradient(Color topColor, Color bottomColor) {
+        ((JCButtonUI)getUI()).setBackgroundPressedGradient(topColor,
+                                                           bottomColor);
     }
 
     /**
