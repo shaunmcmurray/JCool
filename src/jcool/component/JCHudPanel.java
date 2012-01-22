@@ -20,17 +20,8 @@
 
 package jcool.component;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
@@ -46,6 +37,7 @@ import javax.swing.JComponent;
 public class JCHudPanel extends JComponent implements Serializable {
 
     private CloseButton closeButton;
+    private Point dragStart;
 
     public JCHudPanel() {
         super();
@@ -65,6 +57,20 @@ public class JCHudPanel extends JComponent implements Serializable {
             @Override
             public void componentResized(ComponentEvent e) {
                 closeButton.setLocation(getWidth() - 28, 5);
+            }
+        });
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                dragStart = e.getPoint();
+            }
+        });
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                Point location = getLocation();
+                setLocation(location.x + e.getX() - dragStart.x,
+                            location.y + e.getY() - dragStart.y);
             }
         });
         this.add(closeButton);

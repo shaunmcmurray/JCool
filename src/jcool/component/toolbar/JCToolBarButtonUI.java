@@ -33,7 +33,7 @@ import jcool.utils.JCoolUtils;
  */
 public class JCToolBarButtonUI extends BasicButtonUI {
 
-    private static Color TEXT_COLOR = Color.WHITE;
+    private static Color TEXT_COLOR = new Color(230, 230, 230);
     private static Color TEXT_SHADOW_COLOR = new Color(10, 10, 10);
 
     // the gradient colors for when the button is selected.
